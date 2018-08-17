@@ -16,7 +16,7 @@ class ClientController extends Controller
      */
     public function index()
     {
-      $clients = Client::get();
+      $clients = Client::get()->sortByDesc('id');
       return ClientResource::collection($clients);
     }
 

@@ -75,9 +75,17 @@ export default{
     }
   },
   methods: {
-    getClients(){
-      axios.get('http://localhost:8000/api/clients').then(response => {
+    fetchClients(){
+      axios({
+        method: 'get',
+        url: '/api/clients',
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('token')
+        }
+      }).then(response => {
         this.clients = response.data.data
+      }).catch(error => {
+        console.log(error)
       })
     },
     openClientMenuModal(){
@@ -86,7 +94,7 @@ export default{
     },
     closeClientMenuModal(){
       this.showClientMenuModal = false
-      this.getClients()
+      this.fetchClients()
     },
     setModalPropClient(event){
       let parentNode = event.target.parentNode
@@ -102,7 +110,7 @@ export default{
     closeClientAddModal(){
       this.showClientAddModal = false
       this.search = ''
-      this.getClients()
+      this.fetchClients()
     },
   },
   computed: {
@@ -113,7 +121,7 @@ export default{
     }
   },
   created(){
-    this.getClients()
+    this.fetchClients()
   }
 }
 </script>

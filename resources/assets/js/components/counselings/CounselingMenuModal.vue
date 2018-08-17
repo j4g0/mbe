@@ -51,13 +51,21 @@ export default{
       this.$router.push({ name: 'CounselingAdd', params: { client: this.cProp, counseling_id: this.counseling.id } })
     },
     deleteCounseling(){
-      axios.delete('/api/counselings/' + this.counseling.id)
+      axios.delete('/api/counselings/' + this.counseling.id, {
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('token')
+        }
+      })
         .then(this.$emit('closeModal'))
         .catch(error => console.log(error))
     }
   },
   created(){
-    axios.get('/api/counselings/' + this.counseling.id)
+    axios.get('/api/counselings/' + this.counseling.id, {
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('token')
+      }
+    })
       .then(response => {
         this.cProp.id = response.data.data.id
         this.cProp.name = response.data.data.client_name

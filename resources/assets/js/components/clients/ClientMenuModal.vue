@@ -54,7 +54,11 @@ export default{
   },
   methods: {
     deleteClient(){
-      axios.delete(`/api/clients/${this.client.id}`)
+      axios.delete(`/api/clients/${this.client.id}`, {
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('token')
+        }
+      })
         .then(response => this.$emit('closeMenuModal'))
         .catch(error => console.log(error))
     }

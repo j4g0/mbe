@@ -56,9 +56,6 @@
               </h3>
             </div>
             <div class="col-md-4">
-              <!-- <router-link :to="{ name: 'CounselingAdd', params: { id: client.id } }" class="btn btn-dark btn-block"> -->
-              <!--   <i class="fas fa-plus"></i> -->
-              <!-- </router-link> -->
               <button class="btn btn-dark btn-block" @click="goToCounselingAdd">
                 <i class="fas fa-plus"></i>
               </button>
@@ -92,13 +89,16 @@ export default{
       let cProp = {}
       cProp.id = this.client.id
       cProp.name = this.client.last_name + ', ' + this.client.first_name
-
       return cProp
     }
   },
   methods:{
     fetchClient(client_id){
-      axios.get(`/api/clients/${client_id}`)
+      axios.get(`/api/clients/${client_id}`, {
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('token')
+        }
+      })
         .then(response => {
           this.client = response.data.data
           this.counselings = this.client.counselings
@@ -106,15 +106,22 @@ export default{
         .catch(error => console.log(error))
     },
     saveClientFile(){
-      axios.put('/api/clients/' + this.client.id, {
-        first_name: this.client.first_name,
-        last_name: this.client.last_name
+      axios({
+        method: 'put',
+        url: '/api/clients/' + this.client.id,
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('token')
+        },
+        data: {
+          first_name: this.client.first_name,
+          last_name: this.client.last_name
+        }
       }).then(response => {
         this.$router.push({ name: 'ClientIndex' })
       }).catch(error => console.log(error))
     },
     goToCounselingAdd(counseling_id){
-      if(counseling_id){
+      if(Number.isInteger(counseling_id)){
         this.$router.push({ name: 'CounselingAdd', params: { client: this.clientProp, counseling_id: counseling_id } })
       }else{
         this.$router.push({ name: 'CounselingAdd', params: { client: this.clientProp } })

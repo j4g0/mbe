@@ -86,26 +86,45 @@ export default{
       }
     },
     storeCounseling(){
-      axios.post('/api/counselings', {
-        client_id: this.client.id,
-        description: this.description,
-        date: this.date
+      axios({
+        method: 'post',
+        url: '/api/counselings',
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('token')
+        },
+        data: {
+          client_id: this.client.id,
+          description: this.description,
+          date: this.date
+        }
       })
         .then(this.$router.push({ name: 'ClientIndex' }))
         .catch(error => console.log(error))
     },
     editCounseling(){
-      axios.put('api/counselings/' + this.counseling_id, {
-        client_id: this.client.id,
-        description: this.description,
-        date: this.date
-      }).then(this.$router.push({ name: 'ClientIndex' }))
+      axios({
+        method: 'put',
+        url: '/api/counselings/' + this.counseling_id,
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('token')
+        },
+        data: {
+          client_id: this.client.id,
+          description: this.description,
+          date: this.date
+        }
+      })
+        .then(this.$router.push({ name: 'ClientIndex' }))
         .catch(error => console.log(error))
     }
   },
   mounted(){
     if(this.counseling_id){
-      axios.get('/api/counselings/' + this.counseling_id)
+      axios.get('/api/counselings/' + this.counseling_id, {
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('token')
+        }
+      })
         .then(response => {
           this.date = response.data.data.date
           this.description = response.data.data.description

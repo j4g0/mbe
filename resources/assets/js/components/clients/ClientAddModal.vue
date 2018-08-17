@@ -29,12 +29,6 @@
                   Speichern &amp; zur Akte
                 </button>
               </div>
-              <!-- <div class="col-md-6"> -->
-              <!--   <button class="btn btn-dark btn-block" @click.prevent="addClientAndAddCounseling"> -->
-              <!--     <i class="fas fa-calendar-alt"></i> -->
-              <!--     Speichern &amp; Termin anlegen -->
-              <!--   </button> -->
-              <!-- </div> -->
             </div>
           </form>
         </div>
@@ -56,9 +50,16 @@ export default{
   },
   methods: {
     addClientAndViewFile(){
-      axios.post('/api/clients', {
-        first_name: this.firstName,
-        last_name: this.lastName
+      axios({
+        method: 'post',
+        url: '/api/clients',
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('token')
+        },
+        data: {
+          first_name: this.firstName,
+          last_name: this.lastName
+        }
       })
         .then(response => {
           console.log(response.data.data.id)

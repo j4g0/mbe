@@ -102,11 +102,18 @@ export default{
     getCounselings(pageUrl){
       let vm = this;
       pageUrl = pageUrl || '/api/counselings'
-      axios.get(pageUrl).then(response => {
+
+      axios.get(pageUrl, {
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('token')
+        }
+      }).then(response => {
         let responseObject = response.data
         this.counselings = responseObject.data
         vm.makePagination(responseObject.meta, responseObject.links)
-      }).catch(error => console.log(error))
+      }).catch(error => {
+        console.log(error)
+      })
     },
     makePagination(meta, links){
       let pagination = {
