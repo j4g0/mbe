@@ -46,6 +46,7 @@ class ClientController extends Controller
     public function show($id)
     {
       $client = Client::findOrFail($id);
+      /* $client = Client::with('counselings')->find($id); */
       return new ClientResource($client);
     }
 

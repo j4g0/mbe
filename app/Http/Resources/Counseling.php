@@ -15,6 +15,7 @@ class Counseling extends JsonResource
     public function toArray($request)
     {
       return [
+        'id'          => $this->id,
         'client_id'   => $this->client_id,
         'client_name' => $this->client->first_name . " " . $this->client->last_name,
         'description' => $this->description,

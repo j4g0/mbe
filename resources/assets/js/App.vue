@@ -1,0 +1,34 @@
+<template>
+  <div>
+    <Navbar></Navbar>
+    <div class="row">
+      <Sidebar></Sidebar>
+      <div class="col-md-10 offset-2 mt-5">
+        <router-view></router-view>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import Navbar from './components/Navbar'
+import Sidebar from './components/Sidebar'
+
+export default{
+  name: 'App',
+  components: {
+    Navbar,
+    Sidebar
+  },
+  data(){
+    return{
+
+    }
+  }
+}
+</script>
+
+<style>
+
+</style>
+

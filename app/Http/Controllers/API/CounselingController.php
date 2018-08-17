@@ -16,7 +16,7 @@ class CounselingController extends Controller
      */
     public function index()
     {
-      $counselings = Counseling::get();
+      $counselings = Counseling::orderBy('date', 'desc')->paginate(20);
       return CounselingResource::collection($counselings);
     }
 
@@ -28,7 +28,14 @@ class CounselingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $counseling = new Counseling;
+      $counseling->client_id = $request->client_id;
+      $counseling->description = $request->description;
+      $counseling->date = $request->date;
+
+      if($counseling->save()){
+        return new CounselingResource($counseling);
+      }
     }
 
     /**
@@ -39,7 +46,8 @@ class CounselingController extends Controller
      */
     public function show($id)
     {
-        //
+      $counseling = Counseling::find($id);
+      return new CounselingResource($counseling);
     }
 
     /**
@@ -51,7 +59,14 @@ class CounselingController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+      $counseling = Counseling::find($id);
+      $counseling->client_id = $request->client_id;
+      $counseling->description = $request->description;
+      $counseling->date = $request->date;
+
+      if($counseling->save()){
+        return new CounselingResource($counseling);
+      }
     }
 
     /**
@@ -62,6 +77,9 @@ class CounselingController extends Controller
      */
     public function destroy($id)
     {
-        //
+      $counseling = Counseling::find($id);
+      if($counseling->delete()){
+        return new CounselingResource($counseling);
+      }
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Counseling;
 
 class Client extends JsonResource
 {
@@ -14,10 +15,11 @@ class Client extends JsonResource
      */
     public function toArray($request)
     {
-        /* return parent::toArray($request); */
       return [
         'id' => $this->id,
-        'full_name' => $this->first_name . ' ' .  $this->last_name,
+        'first_name' => $this->first_name,
+        'last_name' =>  $this->last_name,
+        'counselings' => $this->counselings
       ];
     }
 }

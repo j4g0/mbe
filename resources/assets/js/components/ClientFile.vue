@@ -1,0 +1,134 @@
+<template>
+  <div class="client-file container mt-3">
+    <div class="row">
+      <div class="col-md-10">
+        <h1>
+          <i class="fas fa-user"></i>
+          {{ client.last_name }}, {{ client.first_name }}
+        </h1>
+      </div>
+      <div class="col-md-2">
+        <button class="btn btn-light btn-block mt-2" @click="$router.push({ name: 'ClientIndex' })">&laquo; Zurück</button>
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-md-8">
+        <div class="card">
+
+          <form class="card-body">
+            <div class="row">
+              <div class="col-md-6">
+                <h3 class="card-title mt-2 ml-2">
+                  <i class="fas fa-folder-open"></i>
+                  Klientendaten
+                </h3>
+              </div>
+              <div class="col-md-6">
+                <button class="btn btn-dark btn-block mt-1" @click.prevent="saveClientFile">Speichern</button>
+              </div>
+            </div>
+            <hr>
+            
+            <div class="form-group">
+              <label for="fall_nr">FallNr.</label>
+              <input type="number" class="form-control" disabled name="fall_nr" v-model="client.id">
+            </div>
+            <div class="form-group">
+              <label for="first_name">Vorname</label>
+              <input type="text" class="form-control" name="first_name" v-model="client.first_name">
+            </div>
+            <div class="form-group">
+              <label for="last_name">Nachname</label>
+              <input type="text" class="form-control" name="last_name" v-model="client.last_name">
+            </div>
+          </form><!-- end of form -->
+
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card card-body">
+          <div class="row">
+            <div class="col-md-8">
+              <h3 class="card-title mt-2 ml-2">
+                <i class="fas fa-calendar-alt"></i>
+                Termine
+              </h3>
+            </div>
+            <div class="col-md-4">
+              <!-- <router-link :to="{ name: 'CounselingAdd', params: { id: client.id } }" class="btn btn-dark btn-block"> -->
+              <!--   <i class="fas fa-plus"></i> -->
+              <!-- </router-link> -->
+              <button class="btn btn-dark btn-block" @click="goToCounselingAdd">
+                <i class="fas fa-plus"></i>
+              </button>
+            </div>
+          </div>
+
+          <table class="table-borderless table-hover ml-2">
+            <tbody>
+              <tr v-for="counseling in counselings" :key="counseling.id" @click="goToCounselingAdd(counseling.id)">
+                <td>{{ counseling.date }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default{
+  name: 'ClientFile',
+  data(){
+    return{
+      client: {},
+      counselings: {}
+    }
+  },
+  computed: {
+    clientProp(){
+      let cProp = {}
+      cProp.id = this.client.id
+      cProp.name = this.client.last_name + ', ' + this.client.first_name
+
+      return cProp
+    }
+  },
+  methods:{
+    fetchClient(client_id){
+      axios.get(`/api/clients/${client_id}`)
+        .then(response => {
+          this.client = response.data.data
+          this.counselings = this.client.counselings
+        })
+        .catch(error => console.log(error))
+    },
+    saveClientFile(){
+      axios.put('/api/clients/' + this.client.id, {
+        first_name: this.client.first_name,
+        last_name: this.client.last_name
+      }).then(response => {
+        this.$router.push({ name: 'ClientIndex' })
+      }).catch(error => console.log(error))
+    },
+    goToCounselingAdd(counseling_id){
+      if(counseling_id){
+        this.$router.push({ name: 'CounselingAdd', params: { client: this.clientProp, counseling_id: counseling_id } })
+      }else{
+        this.$router.push({ name: 'CounselingAdd', params: { client: this.clientProp } })
+      }
+    },
+  },
+  created(){
+    this.fetchClient(this.$route.params.id)
+  }
+}
+</script>
+
+<style scoped>
+tbody tr{
+  cursor: pointer;
+}
+</style>
