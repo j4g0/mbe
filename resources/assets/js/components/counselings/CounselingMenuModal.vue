@@ -67,7 +67,7 @@ export default{
       }
     })
       .then(response => {
-        this.cProp.id = response.data.data.id
+        this.cProp.id = response.data.data.client_id
         this.cProp.name = response.data.data.client_name
       })
       .catch(error => console.log(error))

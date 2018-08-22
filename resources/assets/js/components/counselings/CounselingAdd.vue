@@ -98,7 +98,8 @@ export default{
           date: this.date
         }
       })
-        .then(this.$router.push({ name: 'ClientIndex' }))
+        //.then(this.$router.push({ name: 'ClientIndex' }))
+        .then(this.$router.go(-1))
         .catch(error => console.log(error))
     },
     editCounseling(){
@@ -114,7 +115,8 @@ export default{
           date: this.date
         }
       })
-        .then(this.$router.push({ name: 'ClientIndex' }))
+        //.then(this.$router.push({ name: 'ClientIndex' }))
+        .then(this.$router.go(-1))
         .catch(error => console.log(error))
     }
   },

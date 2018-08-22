@@ -24,6 +24,9 @@ export default{
     return{
 
     }
+  },
+  beforeDestroy() {
+    console.log('delete token on closing the app')
   }
 }
 </script>

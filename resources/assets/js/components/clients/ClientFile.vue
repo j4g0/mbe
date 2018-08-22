@@ -61,11 +61,12 @@
               </button>
             </div>
           </div>
+          <hr>
 
           <table class="table-borderless table-hover ml-2">
             <tbody>
-              <tr v-for="counseling in counselings" :key="counseling.id" @click="goToCounselingAdd(counseling.id)">
-                <td>{{ counseling.date }}</td>
+              <tr v-for="counseling in sortedCounselings" :key="counseling.id" @click="goToCounselingAdd(counseling.id)">
+                <td>{{ counseling.date | formatDate }}</td>
               </tr>
             </tbody>
           </table>
@@ -84,12 +85,31 @@ export default{
       counselings: {}
     }
   },
+  filters: {
+    formatDate(date) {
+      let options = { weekday: 'short', year: 'numeric', month: '2-digit', day: '2-digit'}
+      let outputDate = new Date(date)
+      return outputDate.toLocaleDateString("de-DE", options)
+    }
+  },
   computed: {
     clientProp(){
       let cProp = {}
       cProp.id = this.client.id
       cProp.name = this.client.last_name + ', ' + this.client.first_name
       return cProp
+    },
+    sortedCounselings() {
+      // build an array to sort 
+      let counselingsArray = []
+
+      for(let counseling in this.counselings) {
+        counselingsArray.push(this.counselings[counseling])
+      }
+
+      counselingsArray = this.sortCounselingsByDate( counselingsArray )
+
+      return counselingsArray
     }
   },
   methods:{
@@ -127,6 +147,14 @@ export default{
         this.$router.push({ name: 'CounselingAdd', params: { client: this.clientProp } })
       }
     },
+    sortCounselingsByDate(counselingsArray) {
+      counselingsArray.sort((a, b) => {
+        a = new Date(a.date)
+        b = new Date(b.date)
+        return a>b ? -1 : a<b ? 1 : 0
+      })
+      return counselingsArray
+    }
   },
   created(){
     this.fetchClient(this.$route.params.id)
@@ -137,5 +165,8 @@ export default{
 <style scoped>
 tbody tr{
   cursor: pointer;
+}
+hr{
+  margin-top: 0;
 }
 </style>

@@ -47711,7 +47711,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -47783,6 +47783,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
   data: function data() {
     return {};
+  },
+  beforeDestroy: function beforeDestroy() {
+    console.log('delete token on closing the app');
   }
 });
 
@@ -52941,7 +52944,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\ntbody tr[data-v-56d70476]{\n  cursor: pointer;\n}\n", ""]);
+exports.push([module.i, "\ntbody tr[data-v-56d70476]{\n  cursor: pointer;\n}\nhr[data-v-56d70476]{\n  margin-top: 0;\n}\n", ""]);
 
 // exports
 
@@ -53029,6 +53032,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'ClientFile',
@@ -53039,12 +53043,31 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     };
   },
 
+  filters: {
+    formatDate: function formatDate(date) {
+      var options = { weekday: 'short', year: 'numeric', month: '2-digit', day: '2-digit' };
+      var outputDate = new Date(date);
+      return outputDate.toLocaleDateString("de-DE", options);
+    }
+  },
   computed: {
     clientProp: function clientProp() {
       var cProp = {};
       cProp.id = this.client.id;
       cProp.name = this.client.last_name + ', ' + this.client.first_name;
       return cProp;
+    },
+    sortedCounselings: function sortedCounselings() {
+      // build an array to sort 
+      var counselingsArray = [];
+
+      for (var counseling in this.counselings) {
+        counselingsArray.push(this.counselings[counseling]);
+      }
+
+      counselingsArray = this.sortCounselingsByDate(counselingsArray);
+
+      return counselingsArray;
     }
   },
   methods: {
@@ -53087,6 +53110,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       } else {
         this.$router.push({ name: 'CounselingAdd', params: { client: this.clientProp } });
       }
+    },
+    sortCounselingsByDate: function sortCounselingsByDate(counselingsArray) {
+      counselingsArray.sort(function (a, b) {
+        a = new Date(a.date);
+        b = new Date(b.date);
+        return a > b ? -1 : a < b ? 1 : 0;
+      });
+      return counselingsArray;
     }
   },
   created: function created() {
@@ -53263,10 +53294,12 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
+          _c("hr"),
+          _vm._v(" "),
           _c("table", { staticClass: "table-borderless table-hover ml-2" }, [
             _c(
               "tbody",
-              _vm._l(_vm.counselings, function(counseling) {
+              _vm._l(_vm.sortedCounselings, function(counseling) {
                 return _c(
                   "tr",
                   {
@@ -53277,7 +53310,11 @@ var render = function() {
                       }
                     }
                   },
-                  [_c("td", [_vm._v(_vm._s(counseling.date))])]
+                  [
+                    _c("td", [
+                      _vm._v(_vm._s(_vm._f("formatDate")(counseling.date)))
+                    ])
+                  ]
                 )
               })
             )
@@ -53740,7 +53777,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         Authorization: 'Bearer ' + localStorage.getItem('token')
       }
     }).then(function (response) {
-      _this.cProp.id = response.data.data.id;
+      _this.cProp.id = response.data.data.client_id;
       _this.cProp.name = response.data.data.client_name;
     }).catch(function (error) {
       return console.log(error);
@@ -54119,7 +54156,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -54230,7 +54267,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           description: this.description,
           date: this.date
         }
-      }).then(this.$router.push({ name: 'ClientIndex' })).catch(function (error) {
+      })
+      //.then(this.$router.push({ name: 'ClientIndex' }))
+      .then(this.$router.go(-1)).catch(function (error) {
         return console.log(error);
       });
     },
@@ -54246,7 +54285,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           description: this.description,
           date: this.date
         }
-      }).then(this.$router.push({ name: 'ClientIndex' })).catch(function (error) {
+      })
+      //.then(this.$router.push({ name: 'ClientIndex' }))
+      .then(this.$router.go(-1)).catch(function (error) {
         return console.log(error);
       });
     }
