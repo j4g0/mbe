@@ -1,10 +1,17 @@
 <template>
   <div class="counselings">
     <div class="container mt-3">
-      <h1>
-        <i class="far fa-calendar-alt"></i>
-        Termine
-      </h1>
+      <div class="row">
+        <div class="col-md-8">
+          <h1>
+            <i class="far fa-calendar-alt"></i>
+            Termine
+          </h1>
+        </div>
+        <div class="col-md-4 mt-2">
+          <router-link :to="{ name: 'CounselingPrintView' }" class="btn btn-dark btn-block">Quartalsausdruck</router-link>
+        </div>
+      </div>
       <hr>
       <div class="row">
         <div class="col-md-12 mb-3">
@@ -90,7 +97,9 @@ export default{
     shortenDescription(desc){
       if (!desc) return ''
       desc = desc.toString()
-      return desc.substring(0,40)
+      desc = desc.substring(0,100)
+      desc += '...'
+      return desc
     },
     formatDate(date){
       let options = { weekday: 'short', year: 'numeric', month: '2-digit', day: '2-digit'}
@@ -155,5 +164,8 @@ table{
 }
 tbody tr:hover{
   cursor: pointer;
+}
+hr{
+  margin-top: 0;
 }
 </style>

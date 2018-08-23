@@ -16,7 +16,8 @@ class CounselingController extends Controller
      */
     public function index()
     {
-      $counselings = Counseling::orderBy('date', 'desc')->paginate(20);
+      /* $counselings = Counseling::orderBy('date', 'desc')->paginate(20); */
+      $counselings = Counseling::orderBy('date', 'desc')->get();
       return CounselingResource::collection($counselings);
     }
 

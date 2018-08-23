@@ -4,6 +4,7 @@ import ClientIndex from '../components/clients/ClientIndex'
 import ClientFile from '../components/clients/ClientFile'
 import CounselingIndex from '../components/counselings/CounselingIndex'
 import CounselingAdd from '../components/counselings/CounselingAdd'
+import CounselingPrintView from '../components/counselings/CounselingPrintView'
 import Login from '../components/auth/Login.vue'
 import Logout from '../components/auth/Logout.vue'
 import store from '../store/index.js'
@@ -14,9 +15,10 @@ const routes = [
   //{ path: '/', name: 'ClientIndex', component: ClientIndex },
   { path: '/', redirect: { name: 'Login' }},
   { path: '/clients', name: 'ClientIndex', component: ClientIndex, meta: { requiresAuth: true }},
-  { path: '/counselings', name: 'CounselingIndex', component: CounselingIndex, meta: { requiresAuth: true } },
+  // { path: '/counselings', name: 'CounselingIndex', component: CounselingIndex, meta: { requiresAuth: true } },
   { path: '/clients/:id', name: 'ClientFile', component: ClientFile , meta: { requiresAuth: true }},
   { path: '/counseling', name: 'CounselingAdd', component: CounselingAdd, props: true , meta: { requiresAuth: true }},
+  { path: '/counselings', name: 'CounselingPrintView', component: CounselingPrintView, meta: { requiresAuth: true }},
   { path: '/login', name: 'Login', component: Login },
   { path: '/logout', name: 'Logout', component: Logout , meta: { requiresAuth: true }}
 ]
